@@ -1,27 +1,40 @@
 import string
-import random # define the random module
+import random
 
-# call random.choices() string module to find the string in Uppercase + numeric data.
-ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S))
-print("The randomly generated string is : " + str(ran)) # print the random data
-
+UPPERCASE:   str = string.ascii_uppercase
+LOWERCASE:   str = string.ascii_lowercase
+DIGITS:      str = string.digits
+SYMBOLS:     str = string.punctuation
+SAFE_SYMBLS: str = "!#$%&*+-=?@^_|"
 
 class StringGenerator:
 
-    length:      int
+    length:     int
+    uppercase:  bool
+    lowercase:  bool
+    digits:     bool
+    symbols:    bool
+    safe_symbls:bool
 
-    UPPERCASE:   str = string.ascii_uppercase
-    LOWERCASE:   str = string.ascii_lowercase
-    DIGITS:      str = string.digits
-    SYMBOLS:     str = string.punctuation
-    SAFE_SYMBLS: str = "!#$%&*+-=?@^_|"
 
-    def __init__(self):
-        # TODO
-        self.ok = 1
+    def __init__(self, length,
+                 uppercase, lowercase,
+                 digits, symbols,
+                 safe_symbls):
+        self.uppercase  = uppercase
+        self.lowercase  = lowercase
+        self.digits     = digits
+        self.symbols    = symbols
+        self.safe_symbls= safe_symbls
+        self.length     = length
 
-    def generate() -> str:
-        # TODO logic
 
-        return "pwd"
+    def generate(self) -> str:
+        compose_string = (UPPERCASE if self.uppercase else "") +\
+                         (LOWERCASE if self.lowercase else "") +\
+                         (DIGITS    if self.digits    else "") +\
+                         (SYMBOLS   if self.symbols   else "")
+
+        ran = ''.join(random.choices(compose_string, k = self.length))
+        return ran
             

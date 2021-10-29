@@ -29,6 +29,7 @@ passwordgenerator_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'generator.py',
 ]
 
 install_data(passwordgenerator_sources, install_dir: moduledir)

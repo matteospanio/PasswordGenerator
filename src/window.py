@@ -26,7 +26,8 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk, Notify
+from .generator import StringGenerator
 
 
 @Gtk.Template(resource_path='/org/gnome/PasswordGenerator/window.ui')
@@ -34,6 +35,7 @@ class PasswordgeneratorWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'PasswordgeneratorWindow'
 
     # settings
+    length:         int
     symbols:        bool
     numbers:        bool
     lowercase:      bool
@@ -49,19 +51,74 @@ class PasswordgeneratorWindow(Gtk.ApplicationWindow):
     lowerSwitch:    Gtk.Switch = Gtk.Template.Child()
     upperSwitch:    Gtk.Switch = Gtk.Template.Child()
 
+    # entries
+    pwdLength:      Gtk.Entry  = Gtk.Template.Child()
+
+    # display
+    pwdView:        Gtk.Label  = Gtk.Template.Child()
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.length     = 0
 
         self.symbols    = self.symbolsSwitch.get_active()
         self.numbers    = self.numbersSwitch.get_active()
         self.lowercase  = self.lowerSwitch.get_active()
         self.uppercase  = self.upperSwitch.get_active()
 
-        #self.copyBtn.connect("clicked", self.onCopyBtnClick)
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+
 
 
     @Gtk.Template.Callback()
     def onCopyBtnClick(self, widget, **_kwargs):
-        print("Hello world!")
+        """
+        copies password to clipboard
+        """
+        self.clipboard.set_text(self.pwdView.get_text(), -1)
+
+        # FIXME: notification system doesnt work
+        n = Notify.Notification.new("Success","Password copied to clipboard!")
+        n.show()
+
+
+    @Gtk.Template.Callback()
+    def onGenerateBtnClick(self, widget, **_kwargs):
+        """
+        generates the password
+        """
+        generator = StringGenerator(self.length, self.uppercase,
+                                    self.lowercase, self.numbers,
+                                    self.symbols, False)
+        self.pwdView.set_text(generator.generate())
+
+
+    @Gtk.Template.Callback()
+    def onEntryKeypress(self, widget, event):
+        """
+        when you write a number in the entry self.length is updated
+        """
+        self.length = 0 if self.pwdLength.get_text() == '' else int(self.pwdLength.get_text())
+
+
+    @Gtk.Template.Callback()
+    def onSymbolsSwitch(self, widget, gparam):
+        self.symbols = self.symbolsSwitch.get_active()
+
+
+    @Gtk.Template.Callback()
+    def onNumbersSwitch(self, widget, gparam):
+        self.numbers = self.numbersSwitch.get_active()
+
+
+    @Gtk.Template.Callback()
+    def onLowerSwitch(self, widget, gparam):
+        self.lowercase = self.lowerSwitch.get_active()
+
+
+    @Gtk.Template.Callback()
+    def onUpperSwitch(self, widget, gparam):
+        self.uppercase = self.upperSwitch.get_active()
         

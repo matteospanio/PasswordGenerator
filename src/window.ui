@@ -88,6 +88,7 @@
                 <property name="margin-end">20</property>
                 <property name="max-width-chars">3</property>
                 <property name="input-purpose">number</property>
+                <signal name="key-release-event" handler="onEntryKeypress" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -169,6 +170,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
+                <signal name="notify::active" handler="onSymbolsSwitch" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -181,6 +183,7 @@
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
                 <property name="active">True</property>
+                <signal name="notify::active" handler="onNumbersSwitch" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -193,6 +196,7 @@
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
                 <property name="active">True</property>
+                <signal name="notify::active" handler="onLowerSwitch" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -204,6 +208,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
+                <signal name="notify::active" handler="onUpperSwitch" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -248,9 +253,7 @@
                     <property name="receives-default">True</property>
                     <property name="margin-start">5</property>
                     <property name="margin-end">5</property>
-                    <accessibility>
-                      <action action_name="click" description="onGenerateBtnClick"/>
-                    </accessibility>
+                    <signal name="clicked" handler="onGenerateBtnClick" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -266,11 +269,7 @@
                     <property name="receives-default">True</property>
                     <property name="margin-start">5</property>
                     <property name="margin-end">5</property>
-                    <signal name="clicked" handler="onCopyBtnClick" />
-                    <accessibility>
-                      <action action_name="click" description="onCopyBtnClick"/>
-                      <action action_name="press" description="doSomething"/>
-                    </accessibility>
+                    <signal name="clicked" handler="onCopyBtnClick" swapped="no"/>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="copyBtn-atkobject">
                         <property name="AtkObject::accessible-role">push-button</property>
@@ -297,18 +296,22 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="displayPwd">
+          <object class="GtkLabel" id="pwdView">
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
+            <property name="can-focus">False</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
-            <property name="editable">False</property>
-            <property name="justification">center</property>
-            <property name="cursor-visible">False</property>
-            <property name="accepts-tab">False</property>
+            <property name="margin-top">5</property>
+            <property name="margin-bottom">5</property>
+            <property name="vexpand">True</property>
+            <property name="selectable">True</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+              <attribute name="scale" value="2"/>
+            </attributes>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
