@@ -1,0 +1,7 @@
+data/org.gnome.PasswordGenerator.desktop.in
+data/org.gnome.PasswordGenerator.appdata.xml.in
+data/org.gnome.PasswordGenerator.gschema.xml
+src/window.ui
+src/main.py
+src/window.py
+
